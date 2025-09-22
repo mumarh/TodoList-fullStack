@@ -13,7 +13,7 @@ app.use(cors());
 app.use("/api/website/todo", router);
 
 // Port (fallback to 5000 if env is missing)
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Database connection + server start
 mongoose

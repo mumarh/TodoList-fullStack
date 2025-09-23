@@ -18,7 +18,7 @@ const TodoListApp = () => {
 
     if (task._id) {
       axios
-        .put(`http://localhost:3000/api/website/todo/update/${task._id}`, {
+        .put(`https://todolist-fullstack-tzrc.onrender.com/api/website/todo/update/${task._id}`, {
           task: task.task,
         })
         .then((res) => {
@@ -29,7 +29,7 @@ const TodoListApp = () => {
         .catch(() => toast.error("❌ Failed to update task"));
     } else {
       axios
-        .post("http://localhost:3000/api/website/todo/insert", {
+        .post("https://todolist-fullstack-tzrc.onrender.com/api/website/todo/insert", {
           task: task.task,
         })
         .then(() => {
@@ -45,7 +45,7 @@ const TodoListApp = () => {
 
   const Getdata = () => {
     axios
-      .get("http://localhost:3000/api/website/todo/read")
+      .get("https://todolist-fullstack-tzrc.onrender.com/api/website/todo/read")
       .then((res) => setTodo(res.data.data || []))
       .catch((err) => console.error(err));
   };
@@ -55,7 +55,7 @@ const TodoListApp = () => {
   }, []);
 
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:3000/api/website/todo/delete/${id}`)
+    axios.delete(`https://todolist-fullstack-tzrc.onrender.com/api/website/todo/delete/${id}`)
       .then(() => {
         toast.success("✅ Task Deleted Successfully!");
         Getdata();
@@ -64,7 +64,7 @@ const TodoListApp = () => {
   };
 
   const editRow = (id) => {
-    axios.get(`http://localhost:3000/api/website/todo/single/${id}`)
+    axios.get(`https://todolist-fullstack-tzrc.onrender.com/api/website/todo/single/${id}`)
       .then((res) => setTask({ _id: res.data.data._id, task: res.data.data.task }))
       .catch(() => toast.error("❌ Failed to fetch task"));
   };

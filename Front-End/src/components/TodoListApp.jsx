@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Plus, Edit, Trash2 } from "lucide-react";
-import { ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
@@ -8,7 +8,7 @@ const TodoListApp = () => {
   const [task, setTask] = useState({ task: "", _id: "" });
   const [todo, setTodo] = useState([]);
 
-  const handleSubmit = (e) => {
+ const handleSubmit = (e) => {
     e.preventDefault();
 
     if (task.task.trim() === "") {
@@ -16,18 +16,33 @@ const TodoListApp = () => {
       return;
     }
 
+    // 🔍 Check for duplicate task (case-insensitive, excluding the same task when updating)
+    const isDuplicate = todo.some(
+      (t) =>
+        t.task.toLowerCase() === task.task.trim().toLowerCase() &&
+        t._id !== task._id
+    );
+
+    if (isDuplicate) {
+      toast.error("❌ Task already exists!");
+      setTask({ task: "", _id: "" });
+      return;
+    }
+
     if (task._id) {
+      // Update task
       axios
         .put(`https://todolist-fullstack-tzrc.onrender.com/api/website/todo/update/${task._id}`, {
           task: task.task,
         })
-        .then((res) => {
+        .then(() => {
           toast.success("✅ Task Updated Successfully!");
           setTask({ task: "", _id: "" });
           Getdata();
         })
         .catch(() => toast.error("❌ Failed to update task"));
     } else {
+      // Add new task
       axios
         .post("https://todolist-fullstack-tzrc.onrender.com/api/website/todo/insert", {
           task: task.task,
@@ -135,7 +150,22 @@ const TodoListApp = () => {
           )}
         </div>
 
-        <ToastContainer position="top-center" autoClose={2000} />
+                <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={true}
+          newestOnTop={true}
+          pauseOnHover={false}
+          closeOnClick={false}
+          draggable={false}
+          theme="colored"
+          limit={1}
+          closeButton={true}
+          transition={Slide}
+          // transition={Zoom}
+          // transition={Bounce}
+          // transition={Flip}
+        />
       </div>
     </div>
   );
